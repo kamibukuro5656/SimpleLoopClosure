@@ -1,0 +1,26 @@
+<launch>
+
+  <arg name="odometry_topic" default="/aft_mapped_to_init" />
+  <arg name="cloud_topic" default="/cloud_registered" />
+
+  <node pkg="simple_loop_closure" type="simple_loop_closure_node" name="simple_loop_closure" output="screen">
+    <remap from="/odometry" to="$(arg odometry_topic)" />
+    <remap from="/cloud" to="$(arg cloud_topic)" />
+
+    <param name="mapped_cloud" value="true"/>
+    <param name="time_stamp_tolerance" value="0.01"/>
+    <param name="keyframe_dist_th" value="0.5"/>
+    <param name="keyframe_angular_dist_th" value="0.3"/>
+    <param name="loop_search_time_diff_th" value="30.0"/>
+    <param name="loop_search_dist_diff_th" value="30.0"/>
+    <param name="loop_search_angular_dist_th" value="3.1415"/>
+    <param name="loop_search_frame_interval" value="1"/>
+    <param name="search_radius" value="15.0"/>
+    <param name="target_frame_num" value="50"/>
+    <param name="target_voxel_leaf_size" value="0.4"/>
+    <param name="source_voxel_leaf_size" value="0.4"/>
+    <param name="vis_map_voxel_leaf_size" value="0.8"/>
+    <param name="fitness_score_th" value="0.3"/>
+    <param name="vis_map_cloud_frame_interval" value="3"/>
+  </node>
+</launch>

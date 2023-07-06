@@ -7,6 +7,7 @@ It was created to obtain Loop Closed point cloud maps from an algorithm that pro
 ## Tested LiDAR Odometry Algorithms
 - [KISS-ICP](https://github.com/PRBonn/kiss-icp)
 - [Point-LIO](https://github.com/hku-mars/Point-LIO)
+- [Direct LiDAR-Inertial Odometry](https://github.com/vectr-ucla/direct_lidar_inertial_odometry)
 
 ## Demo
 <p align="center">
@@ -52,5 +53,4 @@ I would like to thank the creators of the following open source packages:
 
 ## ToDo
 - Add GPS
-- Save trajectory after Loop Close
 - Improve memory efficiency

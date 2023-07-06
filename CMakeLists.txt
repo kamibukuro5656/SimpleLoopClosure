@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3 REQUIRED)
 find_package(GTSAM REQUIRED)
+find_package(Boost COMPONENTS filesystem REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -34,10 +35,12 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${GTSAM_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIR}
 )
 
 add_executable(${PROJECT_NAME}_node src/simple_loop_closure_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
   gtsam
 )

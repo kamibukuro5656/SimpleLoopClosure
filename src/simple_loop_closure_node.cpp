@@ -165,6 +165,63 @@ private:
     saving_ = false;
   }
 
+  bool saveEachFrames()
+  {
+    std::string frames_directory = save_directory_ + "frames/";
+    if(!boost::filesystem::create_directory(frames_directory)){
+      return false;
+    }
+
+    
+    int optimization_result_size = 0;
+    {
+      MtxLockGuard guard(mtx_res_);
+      optimization_result_size = optimization_result_.size();
+    }
+
+    if(optimization_result_size <= 0)
+      return false;
+    
+    int digits = std::to_string(optimization_result_size).length();
+    if(digits < 6)
+      digits = 6;
+
+    std::string poses_csv_filename = save_directory_ + "poses.csv";
+    std::ofstream poses_csv_file(poses_csv_filename);
+    if(!poses_csv_file){
+      return false;
+    }
+    poses_csv_file << "index, timestamp, x, y, z, qx, qy, qz, qw" << std::endl;
+    for(int i = 0; i < optimization_result_size; i++)
+    {
+      Eigen::Affine3d pose;
+      {
+        MtxLockGuard guard(mtx_res_);
+        pose = Eigen::Affine3d(optimization_result_.at<gtsam::Pose3>(i).matrix());
+      }
+
+      PointCloudType copied_cloud;
+      {
+        MtxLockGuard guard(mtx_buf_);
+        copied_cloud = *keyframes_cloud_[i];
+      }
+
+      std::stringstream frame_filename_str;
+      frame_filename_str << std::setfill('0') << std::right << std::setw(digits) << i << ".pcd";
+      Eigen::Quaterniond quat(pose.rotation());
+      Eigen::Vector3d trans = pose.translation();
+      pcl::io::savePCDFileBinary(frames_directory + frame_filename_str.str(), copied_cloud);
+      poses_csv_file << std::fixed << i << ", "
+                     << pcl_conversions::fromPCL(copied_cloud.header.stamp).toSec() << ", "
+                     << trans.x() << ", " << trans.y() << ", " << trans.z() << ", "
+                     << quat.x() << ", " << quat.y() << ", " << quat.z() << ", " << quat.w() << std::endl;
+    }
+
+    poses_csv_file.close();
+
+    return true;
+  }
+
   void saveThread()
   {
     PointCloudType::Ptr map_cloud = constructPointCloudMap();
@@ -180,6 +237,9 @@ private:
     else
     {
       try{
+        if(!saveEachFrames()){
+          throw std::runtime_error("Save failed");
+        }
         pcl::io::savePCDFileBinary(save_directory_ + "map.pcd", *map_cloud);
         ROS_INFO_STREAM("Save completed.");
       }

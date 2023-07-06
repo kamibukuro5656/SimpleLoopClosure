@@ -14,6 +14,11 @@
 
 #include <Eigen/Dense>
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <fstream>
+#include <stdexcept>
+
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>

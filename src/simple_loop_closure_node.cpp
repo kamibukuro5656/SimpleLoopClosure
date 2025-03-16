@@ -345,11 +345,15 @@ private:
   {
     int optimization_result_size = 0;
     int first_cloud_size = 0;
+    bool is_empty = true;
     {
       MtxLockGuard guard(mtx_res_);
       optimization_result_size = optimization_result_.size();
-      if(!optimization_result_.empty())
-        first_cloud_size = keyframes_cloud_.front()->size();
+      is_empty = optimization_result_.empty();
+    }
+    if(!is_empty){
+      MtxLockGuard guard(mtx_buf_);
+      first_cloud_size = keyframes_cloud_.front()->size();
     }
 
     if(optimization_result_size <= 0)
@@ -621,7 +625,7 @@ private:
       Eigen::Affine3d affine_target;
       {
         MtxLockGuard guard(mtx_res_);
-        affine_target = Eigen::Affine3d(optimization_result_.at<gtsam::Pose3>(i).matrix());
+        affine_target = Eigen::Affine3d(optimization_result_.at<gtsam::Pose3>(tmp_id).matrix());
       }
 
       Eigen::Quaterniond quat_target(affine_target.rotation());

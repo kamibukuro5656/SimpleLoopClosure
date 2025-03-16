@@ -24,7 +24,7 @@ This value is provided because LiDAR with limited FoV often fails in registratio
 Unit : frame  
 If there are multiple frames in the buffer, the loop search is skipped at this interval.  
 - search_radius  
-単位 : m  
+Unit : m  
 Search radius.  
 - target_frame_num  
 Unit : frame  

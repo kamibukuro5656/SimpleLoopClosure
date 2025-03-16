@@ -15,6 +15,11 @@ It was created to obtain Loop Closed point cloud maps from an algorithm that pro
   <img width="640" src="images/trajectory.png">
 </p>
 
+## ROS2
+[ashBabu](https://github.com/ashBabu) has created a ROS2 implementation based on this repository.  
+Excellent work. Thank you!  
+[https://github.com/ashBabu/simple_loop_closure/tree/ros2](https://github.com/ashBabu/simple_loop_closure/tree/ros2)
+
 ## Build
 Please install [GTSAM4.x](https://gtsam.org/get_started/).
 ~~~
@@ -50,7 +55,3 @@ I would like to thank the creators of the following open source packages:
 - [GTSAM](https://github.com/borglab/gtsam)
 - [nanoflann](https://github.com/jlblancoc/nanoflann)
 - [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM)
-
-## ToDo
-- Add GPS
-- Improve memory efficiency
